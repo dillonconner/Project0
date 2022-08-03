@@ -1,5 +1,8 @@
 package dev.conner.app;
 
+import dev.conner.controllers.EmployeeController;
+import dev.conner.services.EmployeeService;
+import dev.conner.services.EmployeeServiceImpl;
 import io.javalin.Javalin;
 
 import java.sql.Connection;
@@ -9,24 +12,17 @@ import java.sql.Statement;
 
 public class App {
 
-    //public static Service layer object thing
 
     public static void main(String[] args) {
-        //Javalin app = Javalin.create();
-        try{
-            Connection conn = DriverManager.getConnection(System.getenv("AZURE_SQL_DB"));
-
-            Statement s = conn.createStatement();
-            s.execute("insert into player values (default,'Dillon','Conner', 60000)");
-            System.out.println(conn);
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
+        Javalin app = Javalin.create();
 
 
         //make handlers
-
+        EmployeeService eS = new EmployeeServiceImpl();
+        EmployeeController eC = new EmployeeController(eS);
         // define routes
+        app.get("/employees", eC.getEmployeeById);
+
 
         //app.start();
     }

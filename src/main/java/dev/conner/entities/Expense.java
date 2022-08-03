@@ -8,10 +8,10 @@ public class Expense {
     private int id;
     private String issuerId;        //(or maybe employee id)
     private String description;
-    private String type;            //change to enum
+    private String type;            //change to enum or not ???
     private int amount;
     private long date;              //epoch time
-    private Status status;          //change to enum
+    private Status status;          //change to enum :DONE everywhere
 
     public Expense(int id, String issuerId, String description, String type, int amount, long date, Status status) {
         this.id = id;

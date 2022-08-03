@@ -4,7 +4,7 @@ public class Employee {
 
     private int id;
     private String name;
-    private String title;
+    private String title;  //just for fun
 
     public Employee(int id, String name, String title) {
         this.id = id;
