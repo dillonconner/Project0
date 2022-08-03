@@ -3,6 +3,7 @@ package dev.conner.services;
 import dev.conner.entities.Employee;
 
 import java.util.List;
+import java.util.Set;
 
 public class EmployeeServiceImpl implements EmployeeService{
     public EmployeeServiceImpl() {
@@ -20,7 +21,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public List<Employee> retrieveAllEmployees() {
+    public Set<Employee> retrieveAllEmployees() {
         return null;
     }
 

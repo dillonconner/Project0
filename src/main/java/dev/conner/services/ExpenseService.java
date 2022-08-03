@@ -1,8 +1,7 @@
 package dev.conner.services;
 
 import dev.conner.entities.Expense;
-
-import java.util.List;
+import java.util.Set;
 
 public interface ExpenseService {
 
@@ -10,7 +9,7 @@ public interface ExpenseService {
 
     Expense retrieveExpenseById(int id);
 
-    List<Expense> retrieveAllExpenses();
+    Set<Expense> retrieveAllExpenses();
 
     Expense modifyExpense(Expense expense);
 

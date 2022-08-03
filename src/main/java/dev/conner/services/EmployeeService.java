@@ -3,6 +3,7 @@ package dev.conner.services;
 import dev.conner.entities.Employee;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EmployeeService {
 
@@ -10,7 +11,7 @@ public interface EmployeeService {
 
     Employee retrieveEmployeeById(int id);
 
-    List<Employee> retrieveAllEmployees();
+    Set<Employee> retrieveAllEmployees();
 
     Employee modifyEmployee(Employee employee);
 

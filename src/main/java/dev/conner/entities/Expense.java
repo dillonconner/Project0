@@ -2,15 +2,18 @@ package dev.conner.entities;
 
 public class Expense {
 
+    public enum Status{PENDING,APPROVED,DENIED}
+    //enum Type{idk maybe use this}
+
     private int id;
     private String issuerId;        //(or maybe employee id)
     private String description;
     private String type;            //change to enum
     private int amount;
     private long date;              //epoch time
-    private String status;          //change to enum
+    private Status status;          //change to enum
 
-    public Expense(int id, String issuerId, String description, String type, int amount, long date, String status) {
+    public Expense(int id, String issuerId, String description, String type, int amount, long date, Status status) {
         this.id = id;
         this.issuerId = issuerId;
         this.description = description;
@@ -66,11 +69,11 @@ public class Expense {
         this.date = date;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -83,7 +86,7 @@ public class Expense {
                 ", type='" + type + '\'' +
                 ", amount=" + amount +
                 ", date=" + date +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

@@ -1,8 +1,7 @@
 package dev.conner.daos;
 
 import dev.conner.entities.Expense;
-
-import java.util.List;
+import java.util.Set;
 
 public interface ExpenseDAO {
 
@@ -10,7 +9,7 @@ public interface ExpenseDAO {
     Expense newExpense(Expense expense);
 
     Expense getExpenseById(int id);
-    List<Expense> getAllExpenses();
+    Set<Expense> getAllExpenses();
 
     Expense updateExpense(Expense expense);
 

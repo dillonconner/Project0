@@ -2,8 +2,7 @@ package dev.conner.services;
 
 import dev.conner.daos.ExpenseDAO;
 import dev.conner.entities.Expense;
-
-import java.util.List;
+import java.util.Set;
 
 public class ExpenseServiceImpl implements ExpenseService{
 
@@ -21,21 +20,24 @@ public class ExpenseServiceImpl implements ExpenseService{
 
     @Override
     public Expense retrieveExpenseById(int id) {
+
         return null;
     }
 
     @Override
-    public List<Expense> retrieveAllExpenses() {
+    public Set<Expense> retrieveAllExpenses() {
         return null;
     }
 
     @Override
     public Expense modifyExpense(Expense expense) {
+
         return null;
     }
 
     @Override
     public boolean deleteExpenseById(int id) {
+
         return false;
     }
 }
