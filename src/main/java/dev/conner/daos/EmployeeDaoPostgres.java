@@ -4,49 +4,109 @@ import dev.conner.entities.Employee;
 import dev.conner.utils.ConnectionUtil;
 
 import java.sql.*;
+import java.util.HashSet;
 import java.util.Set;
 
 public class EmployeeDaoPostgres implements EmployeeDAO{
     @Override
-    public Employee newEmployee(Employee employee) {
+    public Employee createEmployee(Employee employee) {
         try(Connection conn = ConnectionUtil.createConnection()){
-            //insert into employee values (id, name, title)
-            String sql = "insert into employee values (default, ?, ?, ?)";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, employee.getName());
-            //rest of the ? marks
+            String sql = "insert into employee values (default, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, employee.getName());
+            ps.setString(2, employee.getTitle());
 
-            preparedStatement.execute();
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+            ps.execute();
+            ResultSet rs = ps.getGeneratedKeys();
+
             rs.next();
-
             int key = rs.getInt("id");
             employee.setId(key);
+
             return employee;
 
         }catch(SQLException e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
     public Employee getEmployeeById(int id) {
-        return null;
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "select * from employee where id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,id);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+
+            Employee employee = new Employee();
+            employee.setId(rs.getInt("id"));
+            employee.setName(rs.getString("name"));
+            employee.setTitle((rs.getString("title")));
+
+            return employee;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public Set<Employee> getAllEmployees() {
-        return null;
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "select * from employee";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            Set<Employee> employees = new HashSet<Employee>();
+            while(rs.next()){
+                Employee employee = new Employee();
+                employee.setId(rs.getInt("id"));
+                employee.setName(rs.getString("name"));
+                employee.setTitle((rs.getString("title")));
+                employees.add(employee);
+            }
+            return employees;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public Employee updateEmployee(Employee employee) {
-        return null;
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "update employee set name = ?, title = ? where id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, employee.getName());
+            ps.setString(2, employee.getTitle());
+            ps.setInt(3,employee.getId());
+
+            ps.executeUpdate();
+            return employee;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public boolean deleteEmployeeById(int id) {
-        return false;
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "delete from employee where id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.execute();
+            return true;
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

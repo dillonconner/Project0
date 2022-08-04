@@ -12,7 +12,7 @@ public class ExpenseDaoTests {
     @Test
     @Order(1)
     void create_expense_test(){
-        Expense e = new Expense(0, "idk", "none", "misc", 420, 2, Expense.Status.PENDING);
+        Expense e = new Expense(0, 1, "none", "misc", 420, 2, Expense.Status.PENDING);
         Expense savedE = expenseDAO.newExpense(e);
         Assertions.assertNotEquals(0,savedE.getId());
     }

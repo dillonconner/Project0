@@ -6,14 +6,14 @@ public class Expense {
     //enum Type{idk maybe use this}
 
     private int id;
-    private String issuerId;        //(or maybe employee id)
+    private int issuerId;        //(or maybe employee id)
     private String description;
     private String type;            //change to enum or not ???
     private int amount;
     private long date;              //epoch time
-    private Status status;          //change to enum :DONE everywhere
+    private Status status;          //change to enum :statusDONE everywhere
 
-    public Expense(int id, String issuerId, String description, String type, int amount, long date, Status status) {
+    public Expense(int id, int issuerId, String description, String type, int amount, long date, Status status) {
         this.id = id;
         this.issuerId = issuerId;
         this.description = description;
@@ -29,11 +29,11 @@ public class Expense {
         this.id = id;
     }
 
-    public String getIssuerId() {
+    public int getIssuerId() {
         return issuerId;
     }
 
-    public void setIssuerId(String issuerId) {
+    public void setIssuerId(int issuerId) {
         this.issuerId = issuerId;
     }
 
@@ -88,5 +88,15 @@ public class Expense {
                 ", date=" + date +
                 ", status=" + status +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

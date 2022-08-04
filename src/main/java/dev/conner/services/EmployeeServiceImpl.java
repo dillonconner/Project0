@@ -1,37 +1,54 @@
 package dev.conner.services;
 
+import dev.conner.daos.EmployeeDAO;
 import dev.conner.entities.Employee;
 
 import java.util.List;
 import java.util.Set;
 
 public class EmployeeServiceImpl implements EmployeeService{
-    public EmployeeServiceImpl() {
-        super();
+
+    private EmployeeDAO employeeDAO;
+    public EmployeeServiceImpl(EmployeeDAO employeeDAO) {
+        this.employeeDAO = employeeDAO;
     }
 
     @Override
     public Employee hireEmployee(Employee employee) {
-        return null;
+        if(employee.getName().length() == 0){
+            throw new RuntimeException("Employee name cannot be empty");
+        }
+        if(employee.getTitle().length() == 0){
+            throw new RuntimeException("Employee title cannot be empty");
+        }
+        Employee savedEmployee = this.employeeDAO.createEmployee(employee);
+        return savedEmployee;
     }
 
     @Override
     public Employee retrieveEmployeeById(int id) {
-        return null;
+        return this.employeeDAO.getEmployeeById(id);
     }
 
     @Override
     public Set<Employee> retrieveAllEmployees() {
-        return null;
+        return this.employeeDAO.getAllEmployees();
     }
 
     @Override
     public Employee modifyEmployee(Employee employee) {
-        return null;
+        if(employee.getName().length() == 0){
+            throw new RuntimeException("Employee name cannot be empty");
+        }
+        if(employee.getTitle().length() == 0){
+            throw new RuntimeException("Employee title cannot be empty");
+        }
+        Employee savedEmployee = this.employeeDAO.updateEmployee(employee);
+        return savedEmployee;
     }
 
     @Override
     public boolean deleteEmployee(int id) {
-        return false;
+        return this.employeeDAO.deleteEmployeeById(id);
     }
 }

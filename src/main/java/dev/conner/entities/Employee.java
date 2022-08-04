@@ -6,6 +6,10 @@ public class Employee {
     private String name;
     private String title;  //just for fun
 
+    public Employee(){
+
+    }
+
     public Employee(int id, String name, String title) {
         this.id = id;
         this.name = name;
@@ -43,5 +47,15 @@ public class Employee {
                 ", name='" + name + '\'' +
                 ", title='" + title + '\'' +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

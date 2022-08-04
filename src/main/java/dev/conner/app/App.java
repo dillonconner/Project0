@@ -1,14 +1,11 @@
 package dev.conner.app;
 
 import dev.conner.controllers.EmployeeController;
+import dev.conner.daos.EmployeeDAO;
+import dev.conner.daos.EmployeeDaoPostgres;
 import dev.conner.services.EmployeeService;
 import dev.conner.services.EmployeeServiceImpl;
 import io.javalin.Javalin;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class App {
 
@@ -18,10 +15,19 @@ public class App {
 
 
         //make handlers
-        EmployeeService eS = new EmployeeServiceImpl();
+        EmployeeDAO eD = new EmployeeDaoPostgres();
+        EmployeeService eS = new EmployeeServiceImpl(eD);
         EmployeeController eC = new EmployeeController(eS);
-        // define routes
-        app.get("/employees", eC.getEmployeeById);
+
+        // DEFINE ROUTES
+        // employees
+        app.post("/employees", eC.createEmployee);
+        app.get("/employees/{id}", eC.getEmployeeById);
+        app.get("/employees", eC.getAllEmployees);
+        app.put("/employees/{id}", eC.updateEmployee);
+        app.delete("/employees/{id}", eC.deleteEmployee);
+
+        // expenses
 
 
         //app.start();

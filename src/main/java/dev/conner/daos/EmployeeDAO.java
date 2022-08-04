@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface EmployeeDAO {
 
-    Employee newEmployee(Employee employee);
+    Employee createEmployee(Employee employee);
 
     Employee getEmployeeById(int id);
 
