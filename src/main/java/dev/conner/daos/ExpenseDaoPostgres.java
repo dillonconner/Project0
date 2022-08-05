@@ -98,7 +98,7 @@ public class ExpenseDaoPostgres implements ExpenseDAO{
     public Set<Expense> getAllExpensesByQuery(String param, List<String> val) {
         try(Connection conn = ConnectionUtil.createConnection()){
 
-            //////////////       DONT LOOK AT THIS RN IM PLAYING WITH IT STILL  ////////////////////////////////
+             //////////////       DONT LOOK AT THIS RN IM PLAYING WITH IT STILL  ////////////////////////////////
 
             //get empty table
             String checkTable = "select * from expense where 1 = 2";
