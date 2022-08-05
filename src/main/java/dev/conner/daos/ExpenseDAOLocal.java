@@ -2,10 +2,7 @@ package dev.conner.daos;
 
 import dev.conner.entities.Expense;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ExpenseDAOLocal implements ExpenseDAO{
 
@@ -29,6 +26,11 @@ public class ExpenseDAOLocal implements ExpenseDAO{
     public Set<Expense> getAllExpenses() {
         Set<Expense> expenses = new HashSet<Expense>(this.expenseTable.values());
         return expenses;
+    }
+
+    @Override
+    public Set<Expense> getAllExpensesByQuery(String param, List<String> val) {
+        return null;
     }
 
     @Override

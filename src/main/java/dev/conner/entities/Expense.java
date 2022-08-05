@@ -13,6 +13,10 @@ public class Expense {
     private long date;              //epoch time
     private Status status;          //change to enum :statusDONE everywhere
 
+    public Expense(){
+
+    }
+
     public Expense(int id, int issuerId, String description, String type, int amount, long date, Status status) {
         this.id = id;
         this.issuerId = issuerId;

@@ -5,6 +5,8 @@ import dev.conner.entities.Expense;
 import dev.conner.services.ExpenseService;
 import io.javalin.http.Handler;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ExpenseController {
@@ -33,17 +35,45 @@ public class ExpenseController {
 
     //maybe make it get all expenses for specific employee???
     public Handler getAllExpenses = (ctx) -> {
-        //String employee = ctx.queryParam("employee", "none");
+        Map<String, List<String>> query = ctx.queryParamMap();
+        //int employee = Integer.parseInt(ctx.queryParam("employee"));
+        //String type = ctx.queryParam("type");
+        //String status = ctx.queryParam("status");
 
-        //if(employee.equals("none")){
+
+
+        if(query.isEmpty()){
             Set<Expense> expenses = this.expenseService.retrieveAllExpenses();
             String json = this.gson.toJson(expenses);
             ctx.result(json);
-       // }else{
-       //     Set<Expense> expenses = this.expenseService.retrieveAllExpensesByEmployeeId(employee);
-       //     String json = this.gson.toJson(expenses);
-       //     ctx.result(json);
-       //}
+        }else{
+            String json = "";
+            //Map.Entry<String,String> entry : gfg.entrySet()
+            for(Map.Entry<String,List<String>> q: query.entrySet()){
+                //System.out.println(q.getKey() + " " + q.getValue().toString());
+                Set<Expense> expenses = this.expenseService.retrieveAllExpensesByQuery(q.getKey(), q.getValue());
+                json += this.gson.toJson(expenses);
+                ctx.result(json);
+            }
+        }
+
+//        if(employee != 0){
+//            Set<Expense> expenses = this.expenseService.retrieveAllExpensesByEmployeeId(employee);
+//            String json = this.gson.toJson(expenses);
+//            ctx.result(json);
+//        } else if (!type.equals("none")) {
+//            Set<Expense> expenses = this.expenseService.retrieveAllExpensesByType(type);
+//            String json = this.gson.toJson(expenses);
+//            ctx.result(json);
+//        } else if (!status.equals("none")) {
+//            Set<Expense> expenses = this.expenseService.retrieveAllExpensesByStatus(status);
+//            String json = this.gson.toJson(expenses);
+//            ctx.result(json);
+//        } else{
+//            Set<Expense> expenses = this.expenseService.retrieveAllExpenses();
+//            String json = this.gson.toJson(expenses);
+//            ctx.result(json);
+//       }
     };
 
     public Handler updateExpense = (ctx) -> {
