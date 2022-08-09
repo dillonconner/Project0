@@ -1,8 +1,6 @@
 package dev.conner.services;
 
 import dev.conner.entities.Employee;
-
-import java.util.List;
 import java.util.Set;
 
 public interface EmployeeService {

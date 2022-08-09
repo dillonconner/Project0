@@ -16,5 +16,7 @@ public interface ExpenseService {
 
     Expense modifyExpense(Expense expense);
 
+    boolean approveDenyExpense(int id, boolean approve);
+
     boolean deleteExpenseById(int id);
 }

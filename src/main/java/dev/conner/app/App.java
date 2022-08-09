@@ -37,27 +37,25 @@ public class App {
         app.delete("/employees/{id}", emC.deleteEmployee);
 
         // expenses
-        app.post("/expenses", exC.createExpense);
-        app.get("/expenses/{id}", exC.getExpenseById);
-        app.get("/expenses", exC.getAllExpenses);
-        //dont need these
-//        app.get("/expenses?status={status}", exC.getAllExpenses);
-//        app.get("/expenses?type={type}", exC.getAllExpenses);
-//        app.get("/expenses?employeeId={employee}", exC.getAllExpenses);
+        //app.post("/expenses", exC.createExpense);
+        //app.get("/expenses/{expenseId}", exC.getExpenseById);
+        //app.get("/expenses", exC.getAllExpenses);
 
+        //app.put("/expenses/{expenseId}", exC.updateExpense);
+        //app.delete("/expenses/{expenseId}", exC.deleteExpense);
 
-        app.put("/expenses/{id}", exC.updateExpense);
-        app.delete("/expenses/{id}", exC.deleteExpense);
+        // Not sure if I did this right
+        //app.patch("/expenses/{id}/approve", exC.approveExpense);
+        //app.patch("/expenses/{id}/deny", exC.denyExpense);
 
-        //    TO-DO
-        //app.patch("/expenses/{id}/approve", handler);
-        //app.patch("/expenses/{id}/approve", handler);
-
-        //nested
-        //app.post("/employees/{id}/expenses", exC.createExpense);
-        //app.get("/employees/{id}/expenses", exC.getExpenseById);
-
-
+        //nested //ask trainers about this
+        app.post("/employees/{id}/expenses", exC.createExpense);
+        app.get("/employees/{id}/expenses", exC.getAllExpenses);
+        app.get("/employees/{id}/expenses/{expenseId}", exC.getExpenseById);
+        app.put("/employees/{id}/expenses/{expenseId}", exC.updateExpense);
+        app.delete("/employees/{id}/expenses/{expenseId}", exC.deleteExpense);
+        app.patch("/employees/{id}/expenses/{expenseId}/approve", exC.approveExpense);
+        app.patch("/employees/{id}/expenses/{expenseId}/deny", exC.denyExpense);
 
         app.start();
     }

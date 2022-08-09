@@ -28,8 +28,7 @@ public class ExpenseServiceImpl implements ExpenseService{
         expense.setStatus(Expense.Status.PENDING); //see if this is default for enum with tests
         expense.setDate(System.currentTimeMillis() / 1000L); //set epoch date of issue time
 
-        Expense savedExpense = this.expenseDAO.newExpense(expense);
-        return expense;
+        return this.expenseDAO.newExpense(expense);
     }
 
     @Override
@@ -58,17 +57,23 @@ public class ExpenseServiceImpl implements ExpenseService{
         if(expense.getAmount() <= 0){
             throw new RuntimeException("Expense Amount must not be empty");
         }
-        //or check if its still pending i.e. you cant change after approved/denied
-        expense.setStatus(Expense.Status.PENDING); //would go back to pending if approved and then modified
-        expense.setDate(System.currentTimeMillis()/ 1000L); //set epoch date of issue time
+        if(expense.getStatus() != Expense.Status.PENDING){
+            throw new RuntimeException("Approved or Denied expenses cannot be edited");
+        }
+        expense.setDate(System.currentTimeMillis()/ 1000L);
 
-        Expense savedExpense = this.expenseDAO.updateExpense(expense);
-        return expense;
+        return this.expenseDAO.updateExpense(expense);
+    }
+
+    @Override
+    public boolean approveDenyExpense(int id, boolean approve) {
+        return this.expenseDAO.approveDenyExpense(id, approve);
     }
 
     @Override
     public boolean deleteExpenseById(int id) {
         Expense testStatus = this.expenseDAO.getExpenseById(id);
+        if(testStatus == null) return false;
         if(testStatus.getStatus() != Expense.Status.PENDING){
             throw new RuntimeException("Expenses that are APPROVED or DENIED cannot be deleted");
         }

@@ -1,11 +1,9 @@
 package dev.conner.daos;
 
-import dev.conner.entities.Employee;
 import dev.conner.entities.Expense;
 import dev.conner.utils.ConnectionUtil;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +43,7 @@ public class ExpenseDaoPostgres implements ExpenseDAO{
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,id);
             ResultSet rs = ps.executeQuery();
+
             rs.next();
 
             Expense expense = new Expense();
@@ -73,7 +72,7 @@ public class ExpenseDaoPostgres implements ExpenseDAO{
 
             ResultSet rs = ps.executeQuery();
 
-            Set<Expense> expenses = new HashSet<Expense>();
+            Set<Expense> expenses = new HashSet<>();
             while(rs.next()){
                 Expense expense = new Expense();
                 expense.setId(rs.getInt("id"));
@@ -102,13 +101,13 @@ public class ExpenseDaoPostgres implements ExpenseDAO{
 
             //get empty table
             String checkTable = "select * from expense where 1 = 2";
-            PreparedStatement checkPs = conn.prepareStatement(checkTable);
-            ResultSet checkRs = checkPs.executeQuery();
+            Statement checkPs = conn.createStatement();
+            ResultSet checkRs = checkPs.executeQuery(checkTable);
 
             //find data type of param
             int columnType = 0;
-            for(int i = 1; i < checkRs.getMetaData().getColumnCount(); i++){
-                if(checkRs.getMetaData().getCatalogName(i) == "param"){
+            for(int i = 1; i <= checkRs.getMetaData().getColumnCount(); i++){
+                if(checkRs.getMetaData().getColumnName(i).equals(param)){
                     columnType = checkRs.getMetaData().getColumnType(i);
                 }
             }
@@ -124,7 +123,7 @@ public class ExpenseDaoPostgres implements ExpenseDAO{
                     ps.setString(1, val.get(0));
                     break;
                 case(3):  //decimal
-                    ps.setDouble(1, Double.valueOf(val.get(0)));
+                    ps.setDouble(1, Double.parseDouble(val.get(0)));
                     break;
                 default:
                     throw new RuntimeException("Column data type not recognized");
@@ -133,7 +132,7 @@ public class ExpenseDaoPostgres implements ExpenseDAO{
             ResultSet rs = ps.executeQuery();
 
             //make expense list
-            Set<Expense> expenses = new HashSet<Expense>();
+            Set<Expense> expenses = new HashSet<>();
             while(rs.next()){
                 Expense expense = new Expense();
                 expense.setId(rs.getInt("id"));
@@ -168,12 +167,34 @@ public class ExpenseDaoPostgres implements ExpenseDAO{
 
             ps.setInt(7, expense.getId());
 
-            ps.executeUpdate();
-            return expense;
+            int updateCount = ps.executeUpdate();
+            if(updateCount > 0) return expense; //check if something was updated
+            else return null;
 
         }catch(SQLException e){
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public boolean approveDenyExpense(int id, boolean approve) {
+        try(Connection conn = ConnectionUtil.createConnection()){
+            String sql = "update expense set status = ? where id = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            if(approve)ps.setString(1, Expense.Status.APPROVED.name());
+            else ps.setString(1, Expense.Status.DENIED.name());
+            ps.setInt(2, id);
+
+            int updated = ps.executeUpdate();
+            if(updated > 0) return true;
+            else return false; //nothing actually updated
+
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
         }
     }
 

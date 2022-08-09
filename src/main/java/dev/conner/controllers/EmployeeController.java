@@ -18,17 +18,35 @@ public class EmployeeController {
 
     public Handler createEmployee = (ctx) -> {
         Employee em = this.gson.fromJson(ctx.body(), Employee.class);
-        em = this.employeeService.hireEmployee(em);
-        String json = this.gson.toJson(em);
-        ctx.status(201);
-        ctx.result(json);
+        try{
+            em = this.employeeService.hireEmployee(em);
+            if(em == null){
+                ctx.status(400);
+                ctx.result("Employee not created");
+            }else{
+                String json = this.gson.toJson(em);
+                ctx.status(201);
+                ctx.result(json);
+            }
+
+        }catch(RuntimeException e){
+            ctx.status(400);
+            ctx.result(e.getMessage());
+        }
+
     };
 
     public Handler getEmployeeById = (ctx) -> {
         int id = Integer.parseInt(ctx.pathParam("id"));
         Employee em = this.employeeService.retrieveEmployeeById(id);
-        String json = this.gson.toJson(em);
-        ctx.result(json);
+        if(em == null){
+            ctx.status(404);
+            ctx.result("Employee with Id:" + Integer.toString(id) + " not found");
+        }else{
+            String json = this.gson.toJson(em);
+            ctx.status(200);
+            ctx.result(json);
+        }
     };
 
     public Handler getAllEmployees = (ctx) -> {
@@ -42,12 +60,19 @@ public class EmployeeController {
         Employee em = this.gson.fromJson(ctx.body(), Employee.class);
         em.setId(id);
         try{
-            this.employeeService.modifyEmployee(em);
-            String json = this.gson.toJson(em);
-            ctx.result(json);
+            Employee res = this.employeeService.modifyEmployee(em);
+            if(res == null){
+                ctx.status(404);
+                ctx.result("Employee with Id:" + Integer.toString(id) + " not found");
+            }else{
+                String json = this.gson.toJson(em);
+                ctx.status(200);
+                ctx.result(json);
+            }
+
         }catch(RuntimeException e){
             ctx.status(400);
-            ctx.result("no employee bro");
+            ctx.result(e.getMessage());
         }
     };
 
@@ -55,7 +80,13 @@ public class EmployeeController {
         int id = Integer.parseInt(ctx.pathParam("id"));
         boolean result = this.employeeService.deleteEmployee(id);
 
-        if(result) ctx.status(200);
-        else ctx.status(404);
+        if(result){
+            ctx.status(200);
+            ctx.result("Employee Deleted");
+        }
+        else{
+            ctx.status(404);
+            ctx.result("Employee with Id:" + Integer.toString(id) + " not found");
+        }
     };
 }

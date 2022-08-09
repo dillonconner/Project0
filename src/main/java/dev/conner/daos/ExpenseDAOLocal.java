@@ -6,7 +6,7 @@ import java.util.*;
 
 public class ExpenseDAOLocal implements ExpenseDAO{
 
-    private Map<Integer, Expense> expenseTable = new HashMap(); //will turn into sql
+    private Map<Integer, Expense> expenseTable = new HashMap<>(); //will turn into sql
     private int idMaker = 0;
 
     @Override
@@ -18,14 +18,12 @@ public class ExpenseDAOLocal implements ExpenseDAO{
 
     @Override
     public Expense getExpenseById(int id) {
-        Expense expense = this.expenseTable.get(id);
-        return expense;
+        return this.expenseTable.get(id);
     }
 
     @Override
     public Set<Expense> getAllExpenses() {
-        Set<Expense> expenses = new HashSet<Expense>(this.expenseTable.values());
-        return expenses;
+        return new HashSet<>(this.expenseTable.values());
     }
 
     @Override
@@ -37,6 +35,11 @@ public class ExpenseDAOLocal implements ExpenseDAO{
     public Expense updateExpense(Expense expense) {
         this.expenseTable.put(expense.getId(), expense);
         return expense;
+    }
+
+    @Override
+    public boolean approveDenyExpense(int id, boolean approve) {
+        return false;
     }
 
     @Override

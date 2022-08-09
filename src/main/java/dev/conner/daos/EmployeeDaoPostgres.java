@@ -37,6 +37,7 @@ public class EmployeeDaoPostgres implements EmployeeDAO{
             String sql = "select * from employee where id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1,id);
+
             ResultSet rs = ps.executeQuery();
             rs.next();
 
@@ -61,7 +62,7 @@ public class EmployeeDaoPostgres implements EmployeeDAO{
 
             ResultSet rs = ps.executeQuery();
 
-            Set<Employee> employees = new HashSet<Employee>();
+            Set<Employee> employees = new HashSet<>();
             while(rs.next()){
                 Employee employee = new Employee();
                 employee.setId(rs.getInt("id"));
@@ -86,8 +87,9 @@ public class EmployeeDaoPostgres implements EmployeeDAO{
             ps.setString(2, employee.getTitle());
             ps.setInt(3,employee.getId());
 
-            ps.executeUpdate();
-            return employee;
+            int updateCount = ps.executeUpdate();
+            if(updateCount > 0) return employee; //check if something was updated
+            else return null;
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -101,8 +103,10 @@ public class EmployeeDaoPostgres implements EmployeeDAO{
             String sql = "delete from employee where id = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
-            ps.execute();
-            return true;
+
+            int updateCount = ps.executeUpdate();
+            if(updateCount > 0) return true; //check if something was updated
+            else return false;
 
         }catch(SQLException e){
             e.printStackTrace();

@@ -16,6 +16,8 @@ public interface ExpenseDAO {
 
     Expense updateExpense(Expense expense);
 
+    boolean approveDenyExpense(int id, boolean approve);
+
     boolean deleteExpenseById(int id);
 
 }

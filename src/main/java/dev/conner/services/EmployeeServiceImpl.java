@@ -2,8 +2,6 @@ package dev.conner.services;
 
 import dev.conner.daos.EmployeeDAO;
 import dev.conner.entities.Employee;
-
-import java.util.List;
 import java.util.Set;
 
 public class EmployeeServiceImpl implements EmployeeService{
@@ -21,8 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if(employee.getTitle().length() == 0){
             throw new RuntimeException("Employee title cannot be empty");
         }
-        Employee savedEmployee = this.employeeDAO.createEmployee(employee);
-        return savedEmployee;
+        return this.employeeDAO.createEmployee(employee);
     }
 
     @Override
@@ -43,12 +40,13 @@ public class EmployeeServiceImpl implements EmployeeService{
         if(employee.getTitle().length() == 0){
             throw new RuntimeException("Employee title cannot be empty");
         }
-        Employee savedEmployee = this.employeeDAO.updateEmployee(employee);
-        return savedEmployee;
+        return this.employeeDAO.updateEmployee(employee);
     }
 
     @Override
     public boolean deleteEmployee(int id) {
+        //Employee em = this.employeeDAO.getEmployeeById(id);
+        //if(em == null) return false;
         return this.employeeDAO.deleteEmployeeById(id);
     }
 }
