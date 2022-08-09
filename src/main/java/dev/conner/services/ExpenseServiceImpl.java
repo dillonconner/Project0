@@ -23,7 +23,7 @@ public class ExpenseServiceImpl implements ExpenseService{
             throw new RuntimeException("Expense Type must not be empty");
         }
         if(expense.getAmount() <= 0){
-            throw new RuntimeException("Expense Amount must not be empty");
+            throw new RuntimeException("Expense Amount must be greater than 0");
         }
         expense.setStatus(Expense.Status.PENDING); //see if this is default for enum with tests
         expense.setDate(System.currentTimeMillis() / 1000L); //set epoch date of issue time
@@ -48,6 +48,7 @@ public class ExpenseServiceImpl implements ExpenseService{
 
     @Override
     public Expense modifyExpense(Expense expense) {
+
         if (expense.getDescription().length() == 0) {
             throw new RuntimeException("Expense Description must not be empty");
         }
@@ -57,9 +58,11 @@ public class ExpenseServiceImpl implements ExpenseService{
         if(expense.getAmount() <= 0){
             throw new RuntimeException("Expense Amount must not be empty");
         }
-        if(expense.getStatus() != Expense.Status.PENDING){
+        Expense testStatus = this.expenseDAO.getExpenseById(expense.getId());
+        if(testStatus.getStatus() == Expense.Status.APPROVED || testStatus.getStatus() == Expense.Status.DENIED){
             throw new RuntimeException("Approved or Denied expenses cannot be edited");
         }
+        expense.setStatus(Expense.Status.PENDING);
         expense.setDate(System.currentTimeMillis()/ 1000L);
 
         return this.expenseDAO.updateExpense(expense);
@@ -74,7 +77,8 @@ public class ExpenseServiceImpl implements ExpenseService{
     public boolean deleteExpenseById(int id) {
         Expense testStatus = this.expenseDAO.getExpenseById(id);
         if(testStatus == null) return false;
-        if(testStatus.getStatus() != Expense.Status.PENDING){
+
+        if(testStatus.getStatus() == Expense.Status.APPROVED || testStatus.getStatus() == Expense.Status.DENIED){
             throw new RuntimeException("Expenses that are APPROVED or DENIED cannot be deleted");
         }
         return this.expenseDAO.deleteExpenseById(id);

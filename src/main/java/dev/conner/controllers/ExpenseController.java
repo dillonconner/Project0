@@ -126,12 +126,10 @@ public class ExpenseController {
                 ctx.result("Expense successfully deleted");
             }
             else {
-                System.out.println("SERVICE RETURN FALSE BOCK");
                 ctx.status(404);
                 ctx.result("Expense with Id: " + Integer.toString(id) + " not found");
             }
         }catch(RuntimeException e){
-            System.out.println("CATCH BLOCK");
             ctx.status(422);
             ctx.result(e.getMessage());
         }
