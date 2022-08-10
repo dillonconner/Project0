@@ -19,6 +19,17 @@ public class ExpenseDaoTests {
     @BeforeAll
     static void setup(){
         try(Connection conn = ConnectionUtil.createConnection()){
+            Statement s = conn.createStatement();
+            String moreSQL = "create table employee(\n" +
+                    "id serial primary key,\n" +
+                    "name varchar(100) not null,\n" +
+                    "title varchar(100) not null\n" +
+                    ");\n";
+            s.execute(moreSQL);
+
+            String lastSQL = "insert into employee values (default,'Dillon','Associate');\n";
+            s.execute(lastSQL);
+
             String sql = "create table expense(\n" +
                     "id serial primary key,\n" +
                     "issuer_id int references employee(id),\n" +
@@ -28,8 +39,10 @@ public class ExpenseDaoTests {
                     "issue_date int,\n" +
                     "status varchar(10) not null\n" +
                     ");\n";
-            Statement s = conn.createStatement();
+
             s.execute(sql);
+
+
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -64,14 +77,14 @@ public class ExpenseDaoTests {
 
     @Test
     @Order(4)
-    void update_employee_test() {
-        Expense e1 = new Expense(0, 1, "Not none", "misc", 420, 2, Expense.Status.PENDING);
+    void update_expense_test() {
+        Expense e1 = new Expense(1, 1, "Not none", "misc", 400, 2, Expense.Status.PENDING);
         Expense edit = expenseDAO.updateExpense(e1);
         Assertions.assertEquals("Not none", edit.getDescription());
     }
     @Test
     @Order(5)
-    void delete_employee_test() {
+    void delete_expense_test() {
         Assertions.assertTrue(expenseDAO.deleteExpenseById(2));
     }
 
@@ -83,6 +96,9 @@ public class ExpenseDaoTests {
             String sql = "drop table expense";
             Statement statement = connection.createStatement();
             statement.execute(sql);
+
+            String moreSQL = "drop table employee";
+            statement.execute(moreSQL);
         } catch (SQLException e) {
             e.printStackTrace();
         }
